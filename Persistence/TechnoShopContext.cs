@@ -23,6 +23,7 @@ public class TechnoShopContext: IdentityDbContext<User, IdentityRole<Guid>, Guid
     public DbSet<Product> Products { get; set; }
     public DbSet<PSU> Psus { get; set; }
     public DbSet<PSUBrand> PsuBrands { get; set; }
+    public DbSet<PSUFormFactor> PsuFormFactors { get; set; }
     public DbSet<RAM> Rams { get; set; }
     public DbSet<RamBrand> RamBrands { get; set; }
     public DbSet<Socket> Sockets { get; set; }
