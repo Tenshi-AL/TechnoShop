@@ -45,5 +45,7 @@ public class TechnoShopContext: IdentityDbContext<User, IdentityRole<Guid>, Guid
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
+        //TODO remove this after seed
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=shopDb;Username=admin;Password=root");
     }
 }
