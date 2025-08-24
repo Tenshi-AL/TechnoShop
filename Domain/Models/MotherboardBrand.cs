@@ -1,9 +1,11 @@
-﻿namespace Domain.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Domain.Models;
 
 public class MotherboardBrand
 {
     public Guid Id { get; set; }
-    public required string Name { get; set; }
+    [MaxLength(50)]public required string Name { get; set; }
     
     public ICollection<Motherboard> Motherboards { get; set; }
 }
