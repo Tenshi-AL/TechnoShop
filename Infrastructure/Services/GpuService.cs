@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 using Domain.Models;
 using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
