@@ -41,11 +41,11 @@ public class GpuController(IGpuService gpuService, IMapper mapper): ControllerBa
     /// <param name="id">GPU id</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>GPU instance</returns>
+    [HttpGet(":id")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [HttpGet(":id")]
     public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
     {
         var gpu = await gpuService.Get(id, cancellationToken);
@@ -55,9 +55,15 @@ public class GpuController(IGpuService gpuService, IMapper mapper): ControllerBa
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post()
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Post([FromBody] GpuWriteDto gpuWriteDto, CancellationToken cancellationToken)
     {
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        var gpu = mapper.Map<GPU>(gpuWriteDto);
+        var result = await gpuService.Create(gpu, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
     }
 
     [HttpPut]

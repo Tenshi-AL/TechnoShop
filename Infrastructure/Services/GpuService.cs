@@ -27,6 +27,11 @@ public class GpuService(TechnoShopContext db): IGpuService
             .Include(p => p.MemoryType)
             .Include(p => p.Brand)
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken: cancellationToken);
-    
-    
+
+    public async Task<GPU> Create(GPU gpu, CancellationToken cancellationToken)
+    {
+        db.Gpus.Add(gpu);
+        await db.SaveChangesAsync(cancellationToken);
+        return gpu;
+    }
 }
