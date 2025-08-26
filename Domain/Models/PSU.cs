@@ -5,8 +5,6 @@ namespace Domain.Models;
 [Table("PSUs")]
 public class PSU: Product
 {
-    public Guid Id { get; set; }
-    
     public required Guid BrandId { get; set; }
     public PSUBrand? Brand { get; set; }
     

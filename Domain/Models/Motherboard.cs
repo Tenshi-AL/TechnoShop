@@ -5,8 +5,6 @@ namespace Domain.Models;
 [Table("Motherboards")]
 public class Motherboard: Product
 {
-    public Guid Id { get; set; }
-    
     public required Guid ChipsetId { get; set; }
     public Chipset? Chipset { get; set; }
     

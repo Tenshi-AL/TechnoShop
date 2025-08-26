@@ -5,8 +5,6 @@ namespace Domain.Models;
 [Table("GPUs")]
 public class GPU: Product
 {
-    public Guid Id { get; set; }
-    
     public required Guid BrandId { get; set; }
     public GPUBrand Brand { get; set; }
     

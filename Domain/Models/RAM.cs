@@ -5,8 +5,6 @@ namespace Domain.Models;
 [Table("RAMs")]
 public class RAM: Product
 {
-    public Guid Id { get; set; }
-    
     public required Guid BrandId { get; set; }
     public RamBrand? Brand { get; set; }
     

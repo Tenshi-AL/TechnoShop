@@ -5,8 +5,6 @@ namespace Domain.Models;
 [Table("Processors")]
 public class Processor: Product
 {
-    public Guid Id { get; set; }
-    
     public required Guid SocketId { get; set; }
     public Socket? Socket { get; set; }
     

@@ -5,8 +5,6 @@ namespace Domain.Models;
 [Table("SSDs")]
 public class SSD: Product
 {
-    public Guid Id { get; set; }
-    
     public required Guid BrandId { get; set; }
     public SSDBrand? Brand { get; set; }
     
