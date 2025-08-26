@@ -32,5 +32,13 @@ public class MapperProfile: Profile
         
         CreateMap(typeof(JsonPatchDocument<ProcessorWriteDto>), typeof(JsonPatchDocument<Processor>));
         CreateMap(typeof(Operation<ProcessorWriteDto>), typeof(Operation<Processor>));
+
+        CreateMap<MotherboardBrand, MotherboardBranReadDto>();
+        CreateMap<Chipset, ChipsetReadDto>();
+        CreateMap<Motherboard, MotherboardReadDto>();
+        CreateMap<MotherboardWriteDto, Motherboard>();
+        
+        CreateMap(typeof(JsonPatchDocument<MotherboardWriteDto>), typeof(JsonPatchDocument<Motherboard>));
+        CreateMap(typeof(Operation<MotherboardWriteDto>), typeof(Operation<Motherboard>));
     }
 }
