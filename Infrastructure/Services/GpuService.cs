@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using AutoMapper;
+using Domain.Interfaces;
 using Domain.Models;
 using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +9,8 @@ namespace Infrastructure.Services;
 
 public class GpuService(TechnoShopContext db): IGpuService
 {
-    public async Task<ICollection<GPU>> List(GpuQueryParameters gpuListOptions, CancellationToken cancellationToken)
-    {
-        return await db.Gpus
+    public async Task<ICollection<GPU>> List(GpuQueryParameters gpuListOptions, CancellationToken cancellationToken) =>
+        await db.Gpus
             .AsNoTracking()
             .Include(p => p.Manufacturer)
             .Include(p => p.MemoryType)
@@ -19,5 +19,14 @@ public class GpuService(TechnoShopContext db): IGpuService
             .Order(gpuListOptions)
             .Pagination(gpuListOptions)
             .ToListAsync(cancellationToken);
-    }
+
+    public async Task<GPU?> Get(Guid id, CancellationToken cancellationToken) =>
+        await db.Gpus
+            .AsNoTracking()
+            .Include(p => p.Manufacturer)
+            .Include(p => p.MemoryType)
+            .Include(p => p.Brand)
+            .FirstOrDefaultAsync(p => p.Id == id, cancellationToken: cancellationToken);
+    
+    
 }

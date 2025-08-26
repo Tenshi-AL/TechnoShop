@@ -2,6 +2,6 @@
 
 public class GpuManufacturerReadDto
 {
-    public required Guid Id { get; set; }
-    public required string Name { get; set; }
+    public required Guid Id { get; init; }
+    public required string Name { get; init; }
 }

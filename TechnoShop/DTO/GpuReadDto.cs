@@ -1,30 +1,28 @@
 ﻿namespace TechnoShop.DTO;
 
-public class GpuReadDto
+public class GpuReadDto: ProductReadDto
 {
-    public Guid Id { get; set; }
+    public GpuBrandReadDto Brand { get; init; }
+    public GpuManufacturerReadDto Manufacturer { get; init; }
+    public MemoryTypeReadDto? MemoryType { get; init; }
     
-    public GpuBrandReadDto Brand { get; set; }
-    public GpuManufacturerReadDto Manufacturer { get; set; }
-    public MemoryTypeReadDto? MemoryType { get; set; }
-    
-    public string? GPUModel { get; set; }
-    public int VRAM_GB { get; set; }
-    public string? Interface { get; set; }
-    public string? CoolingSystem { get; set; }
-    public int FanCount { get; set; }
-    public bool Backplate { get; set; }
-    public bool ZeroFanIdle { get; set; }
-    public decimal MemorySpeedGbps { get; set; }
-    public int MemoryBusBit { get; set; }
-    public int StreamProcessors { get; set; }
-    public int HDMI_Count { get; set; }
-    public string? HDMI_Version { get; set; }
-    public int DisplayPort_Count { get; set; }
-    public string? DisplayPort_Version { get; set; }
-    public string? Dimensions_mm { get; set; }
-    public decimal SlotCount { get; set; }
-    public string? ExtraPower { get; set; }
-    public int RecommendedPSU_W { get; set; }
-    public string? MaxResolution { get; set; }
+    public string? GPUModel { get; init; }
+    public int VRAM_GB { get; init; }
+    public string? Interface { get; init; }
+    public string? CoolingSystem { get; init; }
+    public int FanCount { get; init; }
+    public bool Backplate { get; init; }
+    public bool ZeroFanIdle { get; init; }
+    public decimal MemorySpeedGbps { get; init; }
+    public int MemoryBusBit { get; init; }
+    public int StreamProcessors { get; init; }
+    public int HDMI_Count { get; init; }
+    public string? HDMI_Version { get; init; }
+    public int DisplayPort_Count { get; init; }
+    public string? DisplayPort_Version { get; init; }
+    public string? Dimensions_mm { get; init; }
+    public decimal SlotCount { get; init; }
+    public string? ExtraPower { get; init; }
+    public int RecommendedPSU_W { get; init; }
+    public string? MaxResolution { get; init; }
 }

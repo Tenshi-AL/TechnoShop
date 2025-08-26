@@ -8,6 +8,7 @@ public class MapperProfile: Profile
 {
     public MapperProfile()
     {
+        CreateMap<Product, ProductReadDto>();
         CreateMap<GPUBrand, GpuBrandReadDto>();
         CreateMap<GpuManufacturer, GpuManufacturerReadDto>();
         CreateMap<MemoryType, MemoryTypeReadDto>();
