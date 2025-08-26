@@ -45,7 +45,7 @@ public class GpuController(IGpuService gpuService, IMapper mapper): ControllerBa
     {
         var gpu = await gpuService.Get(id, cancellationToken);
         if (gpu is null) return NotFound();
-        var result = mapper.Map<GPU>(gpu);
+        var result = mapper.Map<GpuReadDto>(gpu);
         return Ok(result);
     }
 
