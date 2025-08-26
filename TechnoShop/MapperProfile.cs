@@ -40,5 +40,13 @@ public class MapperProfile: Profile
         
         CreateMap(typeof(JsonPatchDocument<MotherboardWriteDto>), typeof(JsonPatchDocument<Motherboard>));
         CreateMap(typeof(Operation<MotherboardWriteDto>), typeof(Operation<Motherboard>));
+
+        CreateMap<PSUFormFactor, PsuFormFactorReadDto>();
+        CreateMap<PSUBrand, PsuBrandReadDto>();
+        CreateMap<PSU, PsuReadDto>();
+        CreateMap<PsuWriteDto, PSU>();
+        
+        CreateMap(typeof(JsonPatchDocument<PsuWriteDto>), typeof(JsonPatchDocument<PSU>));
+        CreateMap(typeof(Operation<PsuWriteDto>), typeof(Operation<PSU>));
     }
 }
