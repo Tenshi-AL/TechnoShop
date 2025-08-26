@@ -1,5 +1,4 @@
-﻿using System.Net;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Interfaces;
 using Domain.Models;
 using Microsoft.AspNetCore.JsonPatch;

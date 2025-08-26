@@ -21,7 +21,9 @@ builder.Services.AddDbContext<TechnoShopContext>(p =>
 
 builder.Services.SwaggerConfigure();
 builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddScoped<IGpuService, GpuService>();
+builder.Services.AddScoped<IProcessorService, ProcessorService>();
 
 var app = builder.Build();
 
