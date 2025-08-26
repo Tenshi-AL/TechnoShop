@@ -1,6 +1,6 @@
 ﻿using Domain.Models;
 
-namespace Infrastructure.Services;
+namespace Domain.Interfaces;
 
 public interface IMotherboardService
 {

@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Interfaces;
+using Domain.Models;
 using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
