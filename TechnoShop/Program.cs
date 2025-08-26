@@ -3,15 +3,22 @@ using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using TechnoShop;
+using TechnoShop.Helpers;
 using TechnoShop.ServicesExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.InputFormatters.Insert(0, MyJPIF.GetJsonPatchInputFormatter());
+});
+
 builder.Services.AddOpenApi();
+
 builder.Services.AddDbContext<TechnoShopContext>(p =>
     p.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.SwaggerConfigure();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IGpuService, GpuService>();

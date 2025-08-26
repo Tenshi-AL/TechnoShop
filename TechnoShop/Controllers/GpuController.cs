@@ -2,6 +2,7 @@
 using AutoMapper;
 using Domain.Interfaces;
 using Domain.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TechnoShop.DTO;
 
@@ -58,7 +59,6 @@ public class GpuController(IGpuService gpuService, IMapper mapper): ControllerBa
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Post([FromBody] GpuWriteDto gpuWriteDto, CancellationToken cancellationToken)
     {
         var gpu = mapper.Map<GPU>(gpuWriteDto);
@@ -66,6 +66,43 @@ public class GpuController(IGpuService gpuService, IMapper mapper): ControllerBa
         return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
     }
 
+    /// <summary>
+    /// Edit gpu 
+    /// </summary>
+    /// <param name="id">GPU id</param>
+    /// <param name="jsonPatchDocument">Json patch document</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     POST /Todo
+    ///     [
+    ///         {
+    ///             "op": "replace",
+    ///             "path": "/GPUModel",
+    ///             "value": "TEST patch"
+    ///         },
+    ///     ]
+    ///
+    /// </remarks>
+    /// <returns>Guid id edited gpu</returns>
+    [HttpPatch(":id")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Patch([FromQuery] Guid id, JsonPatchDocument<GpuWriteDto> jsonPatchDocument,
+        CancellationToken cancellationToken)
+    {
+        var gpu = await gpuService.Get(id, cancellationToken);
+        if (gpu is null) return NotFound();
+        var gpuPatchDocument = mapper.Map<JsonPatchDocument<GPU>>(jsonPatchDocument);
+        gpuPatchDocument.ApplyTo(gpu);
+
+        var result = await gpuService.Update(gpu, cancellationToken);
+        return Ok(result);
+    }
+    
     [HttpPut]
     public async Task<IActionResult> Put()
     {

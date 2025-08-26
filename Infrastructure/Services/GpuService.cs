@@ -9,7 +9,7 @@ namespace Infrastructure.Services;
 
 public class GpuService(TechnoShopContext db): IGpuService
 {
-    public async Task<ICollection<GPU>> List(GpuQueryParameters gpuListOptions, CancellationToken cancellationToken) =>
+    public async Task<ICollection<GPU>> List(GpuQueryParameters gpuListOptions, CancellationToken cancellationToken = default) =>
         await db.Gpus
             .AsNoTracking()
             .Include(p => p.Manufacturer)
@@ -20,7 +20,7 @@ public class GpuService(TechnoShopContext db): IGpuService
             .Pagination(gpuListOptions)
             .ToListAsync(cancellationToken);
 
-    public async Task<GPU?> Get(Guid id, CancellationToken cancellationToken) =>
+    public async Task<GPU?> Get(Guid id, CancellationToken cancellationToken = default) =>
         await db.Gpus
             .AsNoTracking()
             .Include(p => p.Manufacturer)
@@ -28,10 +28,17 @@ public class GpuService(TechnoShopContext db): IGpuService
             .Include(p => p.Brand)
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken: cancellationToken);
 
-    public async Task<GPU> Create(GPU gpu, CancellationToken cancellationToken)
+    public async Task<GPU> Create(GPU gpu, CancellationToken cancellationToken = default)
     {
         db.Gpus.Add(gpu);
         await db.SaveChangesAsync(cancellationToken);
         return gpu;
+    }
+    
+    public async Task<Guid> Update(GPU gpu, CancellationToken cancellationToken = default)
+    {
+        db.Gpus.Update(gpu);
+        await db.SaveChangesAsync(cancellationToken);
+        return gpu.Id;
     }
 }
