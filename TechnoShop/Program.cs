@@ -22,6 +22,7 @@ builder.Services.AddDbContext<TechnoShopContext>(p =>
 builder.Services.SwaggerConfigure();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IRAMService, RAMService>();
+builder.Services.AddScoped<ISSDService, SSDService>();
 builder.Services.AddScoped<IPSUService, PSUService>();
 builder.Services.AddScoped<IMotherboardService, MotherboardService>();
 builder.Services.AddScoped<IGpuService, GpuService>();
