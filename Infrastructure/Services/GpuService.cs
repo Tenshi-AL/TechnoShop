@@ -1,13 +1,23 @@
 ﻿using Domain.Interfaces;
 using Domain.Models;
+using Infrastructure.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Infrastructure.Services;
 
 public class GpuService(TechnoShopContext db): IGpuService
 {
-    public ICollection<GPU> List()
+    public async Task<ICollection<GPU>> List(GpuQueryParameters gpuListOptions, CancellationToken cancellationToken)
     {
-        return db.Gpus.ToList();
+        return await db.Gpus
+            .AsNoTracking()
+            .Include(p => p.Manufacturer)
+            .Include(p => p.MemoryType)
+            .Include(p => p.Brand)
+            .Filter(gpuListOptions)
+            .Order(gpuListOptions)
+            .Pagination(gpuListOptions)
+            .ToListAsync(cancellationToken);
     }
 }

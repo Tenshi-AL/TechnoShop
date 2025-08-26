@@ -4,5 +4,5 @@ namespace Domain.Interfaces;
 
 public interface IGpuService
 {
-    ICollection<GPU> List();
+    Task<ICollection<GPU>> List(GpuQueryParameters gpuListOptions, CancellationToken cancellationToken);
 }

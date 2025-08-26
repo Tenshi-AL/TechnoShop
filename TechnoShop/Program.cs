@@ -2,6 +2,7 @@ using Domain.Interfaces;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using TechnoShop;
 using TechnoShop.ServicesExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<TechnoShopContext>(p =>
     p.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 builder.Services.SwaggerConfigure();
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IGpuService, GpuService>();
 
 var app = builder.Build();
