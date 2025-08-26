@@ -55,5 +55,13 @@ public class MapperProfile: Profile
         
         CreateMap(typeof(JsonPatchDocument<RamWriteDto>), typeof(JsonPatchDocument<RAM>));
         CreateMap(typeof(Operation<RamWriteDto>), typeof(Operation<RAM>));
+
+        CreateMap<SSDFormFactor, SsdFormFactorReadDto>();
+        CreateMap<SSDBrand, SsdBrandReadDto>();
+        CreateMap<SSD, SsdReadDto>();
+        CreateMap<SsdWriteDto, SSD>();
+        
+        CreateMap(typeof(JsonPatchDocument<SsdWriteDto>), typeof(JsonPatchDocument<SSD>));
+        CreateMap(typeof(Operation<SsdWriteDto>), typeof(Operation<SSD>));
     }
 }
