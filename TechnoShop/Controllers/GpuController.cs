@@ -27,7 +27,12 @@ public class GpuController(IGpuService gpuService, IMapper mapper): ControllerBa
     {
         var list = await gpuService.List(parameters, cancellationToken);
         var result = mapper.Map<List<GpuReadDto>>(list);
-        return Ok(result);
+        return Ok(new
+        {
+            result,
+            parameters.PageSize,
+            parameters.Page,
+        });
     }
 
     /// <summary>
