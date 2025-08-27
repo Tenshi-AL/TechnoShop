@@ -1,11 +1,12 @@
 ﻿using System.Linq.Dynamic.Core;
 using Domain.Models;
+using TechnoShop.Models;
 
-namespace Infrastructure.Extensions;
+namespace TechnoShop.Extensions;
 
 public static class CpuExtensions
 {
-    public static IQueryable<Processor> Filter(this IQueryable<Processor> list, ProcessorQueryParams options)
+    public static IEnumerable<Processor> Filter(this IEnumerable<Processor> list, ProcessorQueryParams options)
     {
         if (options.Sockets != null && options.Sockets.Count != 0)
             list = list.Where(p => options.Sockets.Contains(p.SocketId));
@@ -64,7 +65,7 @@ public static class CpuExtensions
         return list;
     }
 
-    public static IQueryable<Processor> Order(this IQueryable<Processor> list, ProcessorQueryParams options)
+    public static IEnumerable<Processor> Order(this IEnumerable<Processor> list, ProcessorQueryParams options)
     {
         if (options.OrderRow is null) return list;
         
@@ -79,12 +80,5 @@ public static class CpuExtensions
             "tdp" => options.OrderByDesk ? list.OrderByDescending(p => p.TDP_W) : list.OrderBy(p => p.TDP_W),
             _ => list
         };
-    }
-
-    public static IQueryable<Processor> Pagination(this IQueryable<Processor> list, ProcessorQueryParams options)
-    {
-        if (options.Page <= 0) options.Page = 1;
-        if (options.PageSize <= 0) options.PageSize = 10;
-        return list.Skip((options.Page - 1) * options.PageSize).Take(options.PageSize);
     }
 }

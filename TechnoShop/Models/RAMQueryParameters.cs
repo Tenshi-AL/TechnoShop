@@ -1,6 +1,8 @@
-﻿namespace Domain.Models;
+﻿using TechnoShop.Interfaces;
 
-public class RAMQueryParameters
+namespace TechnoShop.Models;
+
+public class RAMQueryParameters: IQueryParameters
 {
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 10;

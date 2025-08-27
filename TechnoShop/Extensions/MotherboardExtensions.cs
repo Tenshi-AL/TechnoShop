@@ -1,10 +1,10 @@
 ﻿using Domain.Models;
 
-namespace Infrastructure.Extensions;
+namespace TechnoShop.Extensions;
 
 public static class MotherboardExtensions
 {
-    public static IQueryable<Motherboard> Filter(this IQueryable<Motherboard> list, MotherboardQueryParameters options)
+    public static IEnumerable<Motherboard> Filter(this IEnumerable<Motherboard> list, MotherboardQueryParameters options)
     {
         if (options.Chipsets != null && options.Chipsets.Count != 0)
             list = list.Where(p => options.Chipsets.Contains(p.ChipsetId));
@@ -57,7 +57,7 @@ public static class MotherboardExtensions
         return list;
     }
 
-    public static IQueryable<Motherboard> Order(this IQueryable<Motherboard> list, MotherboardQueryParameters options)
+    public static IEnumerable<Motherboard> Order(this IEnumerable<Motherboard> list, MotherboardQueryParameters options)
     {
         if (options.OrderRow is null) return list;
         
@@ -70,12 +70,5 @@ public static class MotherboardExtensions
             "fanheaders" => options.OrderByDesk ? list.OrderByDescending(p => p.FanHeaders) : list.OrderBy(p => p.FanHeaders),
             _ => list
         };
-    }
-
-    public static IQueryable<Motherboard> Pagination(this IQueryable<Motherboard> list, MotherboardQueryParameters options)
-    {
-        if (options.Page <= 0) options.Page = 1;
-        if (options.PageSize <= 0) options.PageSize = 10;
-        return list.Skip((options.Page - 1) * options.PageSize).Take(options.PageSize);
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TechnoShop.Interfaces;
 
-namespace Domain.Models;
+namespace TechnoShop.Models;
 
-public class GpuQueryParameters
+public class GpuQueryParameters: IQueryParameters
 {
     [Range(0, int.MaxValue)]
     public int? MinVramGb { get; set; }

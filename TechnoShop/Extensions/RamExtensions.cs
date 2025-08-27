@@ -1,10 +1,11 @@
 ﻿using Domain.Models;
+using TechnoShop.Models;
 
-namespace Infrastructure.Extensions;
+namespace TechnoShop.Extensions;
 
 public static class RamExtensions
 {
-    public static IQueryable<RAM> Filter(this IQueryable<RAM> list, RAMQueryParameters options)
+    public static IEnumerable<RAM> Filter(this IEnumerable<RAM> list, RAMQueryParameters options)
     {
         if (options.Brands != null && options.Brands.Count != 0)
             list = list.Where(p => options.Brands.Contains(p.BrandId));
@@ -51,7 +52,7 @@ public static class RamExtensions
         return list;
     }
 
-    public static IQueryable<RAM> Order(this IQueryable<RAM> list, RAMQueryParameters options)
+    public static IEnumerable<RAM> Order(this IEnumerable<RAM> list, RAMQueryParameters options)
     {
         if (options.OrderRow is null) return list;
         
@@ -66,11 +67,5 @@ public static class RamExtensions
             _ => list
         };
     }
-
-    public static IQueryable<RAM> Pagination(this IQueryable<RAM> list, RAMQueryParameters options)
-    {
-        if (options.Page <= 0) options.Page = 1;
-        if (options.PageSize <= 0) options.PageSize = 10;
-        return list.Skip((options.Page - 1) * options.PageSize).Take(options.PageSize);
-    }
+    
 }

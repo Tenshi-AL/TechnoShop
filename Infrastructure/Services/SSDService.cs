@@ -1,6 +1,5 @@
 ﻿using Domain.Interfaces;
 using Domain.Models;
-using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -8,14 +7,14 @@ namespace Infrastructure.Services;
 
 public class SSDService(TechnoShopContext db) : ISSDService
 {
-    public async Task<ICollection<SSD>> List(SSDQueryParameters parameters, CancellationToken cancellationToken = default) =>
+    public async Task<ICollection<SSD>> List(CancellationToken cancellationToken = default) =>
         await db.Ssds
             .AsNoTracking()
             .Include(p => p.Brand)
             .Include(p => p.FormFactor)
-            .Filter(parameters)
-            .Order(parameters)
-            .Pagination(parameters)
+            //.Filter(parameters)
+            //.Order(parameters)
+            //.Pagination(parameters)
             .ToListAsync(cancellationToken);
 
     public async Task<SSD?> Get(Guid id, CancellationToken cancellationToken = default) =>

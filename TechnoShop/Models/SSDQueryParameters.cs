@@ -1,6 +1,8 @@
-﻿namespace Domain.Models;
+﻿using TechnoShop.Interfaces;
 
-public class SSDQueryParameters
+namespace TechnoShop.Models;
+
+public class SSDQueryParameters: IQueryParameters
 {
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 10;

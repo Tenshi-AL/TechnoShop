@@ -4,6 +4,8 @@ using Domain.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TechnoShop.DTO;
+using TechnoShop.Extensions;
+using TechnoShop.Models;
 
 namespace TechnoShop.Controllers;
 
@@ -25,14 +27,11 @@ public class GpuController(IGpuService gpuService, IMapper mapper): ControllerBa
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> List([FromQuery] GpuQueryParameters parameters, CancellationToken cancellationToken)
     {
-        var list = await gpuService.List(parameters, cancellationToken);
-        var result = mapper.Map<List<GpuReadDto>>(list);
-        return Ok(new
-        {
-            result,
-            parameters.PageSize,
-            parameters.Page,
-        });
+        var list = await gpuService.List(cancellationToken);
+        var mappedList = mapper.Map<List<GpuReadDto>>(list
+            .Filter(parameters)
+            .Order(parameters));
+        return Ok(new ListResponce<GpuReadDto>(mappedList, parameters.Page, parameters.PageSize));
     }
 
     /// <summary>

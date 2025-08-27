@@ -1,6 +1,8 @@
-﻿namespace Domain.Models;
+﻿using TechnoShop.Interfaces;
 
-public class PSUQueryParameters
+namespace TechnoShop.Models;
+
+public class PSUQueryParameters: IQueryParameters
 {
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 10;

@@ -1,10 +1,11 @@
 ﻿using Domain.Models;
+using TechnoShop.Models;
 
-namespace Infrastructure.Extensions;
+namespace TechnoShop.Extensions;
 
 public static class SSDExtensions
 {
-    public static IQueryable<SSD> Filter(this IQueryable<SSD> list, SSDQueryParameters options)
+    public static IEnumerable<SSD> Filter(this IEnumerable<SSD> list, SSDQueryParameters options)
     {
         if (options.Brands != null && options.Brands.Count != 0)
             list = list.Where(p => options.Brands.Contains(p.BrandId));
@@ -63,7 +64,7 @@ public static class SSDExtensions
         return list;
     }
 
-    public static IQueryable<SSD> Order(this IQueryable<SSD> list, SSDQueryParameters options)
+    public static IEnumerable<SSD> Order(this IEnumerable<SSD> list, SSDQueryParameters options)
     {
         if (options.OrderRow is null) return list;
         
@@ -79,12 +80,5 @@ public static class SSDExtensions
             "weight" => options.OrderByDesk ? list.OrderByDescending(p => p.Weight_g) : list.OrderBy(p => p.Weight_g),
             _ => list
         };
-    }
-
-    public static IQueryable<SSD> Pagination(this IQueryable<SSD> list, SSDQueryParameters options)
-    {
-        if (options.Page <= 0) options.Page = 1;
-        if (options.PageSize <= 0) options.PageSize = 10;
-        return list.Skip((options.Page - 1) * options.PageSize).Take(options.PageSize);
     }
 }

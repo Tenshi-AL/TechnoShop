@@ -4,6 +4,8 @@ using Domain.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TechnoShop.DTO;
+using TechnoShop.Extensions;
+using TechnoShop.Models;
 
 namespace TechnoShop.Controllers;
 
@@ -20,14 +22,11 @@ public class PSUController(IPSUService psuService, IMapper mapper) : ControllerB
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> List([FromQuery] PSUQueryParameters parameters, CancellationToken cancellationToken)
     {
-        var list = await psuService.List(parameters, cancellationToken);
-        var result = mapper.Map<List<PsuReadDto>>(list);
-        return Ok(new
-        {
-            result,
-            parameters.PageSize,
-            parameters.Page,
-        });
+        var list = await psuService.List(cancellationToken);
+        var mappedList = mapper.Map<List<PsuReadDto>>(list
+            .Filter(parameters)
+            .Order(parameters));
+        return Ok(new ListResponce<PsuReadDto>(mappedList, parameters.Page, parameters.PageSize));
     }
 
     /// <summary>

@@ -1,6 +1,5 @@
 ﻿using Domain.Interfaces;
 using Domain.Models;
-using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -8,14 +7,14 @@ namespace Infrastructure.Services;
 
 public class PSUService(TechnoShopContext db) : IPSUService
 {
-    public async Task<ICollection<PSU>> List(PSUQueryParameters parameters, CancellationToken cancellationToken = default) =>
+    public async Task<ICollection<PSU>> List(CancellationToken cancellationToken = default) =>
         await db.Psus
             .AsNoTracking()
             .Include(p => p.Brand)
             .Include(p => p.FormFactor)
-            .Filter(parameters)
-            .Order(parameters)
-            .Pagination(parameters)
+            //.Filter(parameters)
+            //.Order(parameters)
+            //.Pagination(parameters)
             .ToListAsync(cancellationToken);
 
     public async Task<PSU?> Get(Guid id, CancellationToken cancellationToken = default) =>

@@ -1,10 +1,11 @@
 ﻿using Domain.Models;
+using TechnoShop.Models;
 
-namespace Infrastructure.Extensions;
+namespace TechnoShop.Extensions;
 
 public static class PSUExtensions
 {
-    public static IQueryable<PSU> Filter(this IQueryable<PSU> list, PSUQueryParameters options)
+    public static IEnumerable<PSU> Filter(this IEnumerable<PSU> list, PSUQueryParameters options)
     {
         if (options.Brands != null && options.Brands.Count != 0)
             list = list.Where(p => options.Brands.Contains(p.BrandId));
@@ -60,7 +61,7 @@ public static class PSUExtensions
         return list;
     }
 
-    public static IQueryable<PSU> Order(this IQueryable<PSU> list, PSUQueryParameters options)
+    public static IEnumerable<PSU> Order(this IEnumerable<PSU> list, PSUQueryParameters options)
     {
         if (options.OrderRow is null) return list;
         
@@ -75,12 +76,5 @@ public static class PSUExtensions
             "sata" => options.OrderByDesk ? list.OrderByDescending(p => p.SATA_Count) : list.OrderBy(p => p.SATA_Count),
             _ => list
         };
-    }
-
-    public static IQueryable<PSU> Pagination(this IQueryable<PSU> list, PSUQueryParameters options)
-    {
-        if (options.Page <= 0) options.Page = 1;
-        if (options.PageSize <= 0) options.PageSize = 10;
-        return list.Skip((options.Page - 1) * options.PageSize).Take(options.PageSize);
     }
 }

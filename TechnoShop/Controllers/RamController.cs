@@ -4,6 +4,8 @@ using Domain.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TechnoShop.DTO;
+using TechnoShop.Extensions;
+using TechnoShop.Models;
 
 namespace TechnoShop.Controllers;
 
@@ -20,14 +22,11 @@ public class RamController(IRAMService ramService, IMapper mapper) : ControllerB
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> List([FromQuery] RAMQueryParameters parameters, CancellationToken cancellationToken)
     {
-        var list = await ramService.List(parameters, cancellationToken);
-        var result = mapper.Map<List<RamReadDto>>(list);
-        return Ok(new
-        {
-            result,
-            parameters.PageSize,
-            parameters.Page,
-        });
+        var list = await ramService.List(cancellationToken);
+        var mappedList = mapper.Map<List<RamReadDto>>(list
+            .Filter(parameters)
+            .Order(parameters));
+        return Ok(new ListResponce<RamReadDto>(mappedList, parameters.Page, parameters.PageSize));
     }
 
     /// <summary>

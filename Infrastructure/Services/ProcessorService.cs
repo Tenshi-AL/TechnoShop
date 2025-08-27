@@ -1,6 +1,5 @@
 ﻿using Domain.Interfaces;
 using Domain.Models;
-using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -8,15 +7,15 @@ namespace Infrastructure.Services;
 
 public class ProcessorService(TechnoShopContext db) : IProcessorService
 {
-    public async Task<ICollection<Processor>> List(ProcessorQueryParams parameters, CancellationToken cancellationToken = default) =>
+    public async Task<ICollection<Processor>> List(CancellationToken cancellationToken = default) =>
         await db.Processors
             .AsNoTracking()
             .Include(p => p.Socket)
             .Include(p => p.ProcessorBrand)
             .Include(p => p.MemoryType)
-            .Filter(parameters)
-            .Order(parameters)
-            .Pagination(parameters)
+            //.Filter(parameters)
+            //.Order(parameters)
+            //.Pagination(parameters)
             .ToListAsync(cancellationToken);
 
     public async Task<Processor?> Get(Guid id, CancellationToken cancellationToken = default) =>

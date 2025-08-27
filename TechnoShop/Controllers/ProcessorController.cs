@@ -4,6 +4,8 @@ using Domain.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TechnoShop.DTO;
+using TechnoShop.Extensions;
+using TechnoShop.Models;
 
 namespace TechnoShop.Controllers;
 
@@ -20,14 +22,11 @@ public class ProcessorController(IProcessorService processorService, IMapper map
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> List([FromQuery] ProcessorQueryParams parameters, CancellationToken cancellationToken)
     {
-        var list = await processorService.List(parameters, cancellationToken);
-        var result = mapper.Map<List<ProcessorReadDto>>(list);
-        return Ok(new
-        {
-            result,
-            parameters.PageSize,
-            parameters.Page,
-        });
+        var list = await processorService.List(cancellationToken);
+        var mappedList = mapper.Map<List<ProcessorReadDto>>(list
+            .Filter(parameters)
+            .Order(parameters));
+        return Ok(new ListResponce<ProcessorReadDto>(mappedList, parameters.Page, parameters.PageSize));
     }
 
     /// <summary>

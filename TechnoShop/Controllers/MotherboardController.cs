@@ -5,6 +5,8 @@ using Infrastructure.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TechnoShop.DTO;
+using TechnoShop.Extensions;
+using TechnoShop.Models;
 
 namespace TechnoShop.Controllers;
 
@@ -21,14 +23,11 @@ public class MotherboardController(IMotherboardService motherboardService, IMapp
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> List([FromQuery] MotherboardQueryParameters parameters, CancellationToken cancellationToken)
     {
-        var list = await motherboardService.List(parameters, cancellationToken);
-        var result = mapper.Map<List<MotherboardReadDto>>(list);
-        return Ok(new
-        {
-            result,
-            parameters.PageSize,
-            parameters.Page,
-        });
+        var list = await motherboardService.List(cancellationToken);
+        var mappedList = mapper.Map<List<MotherboardReadDto>>(list
+            .Filter(parameters)
+            .Order(parameters));
+        return Ok(new ListResponce<MotherboardReadDto>(mappedList, parameters.Page, parameters.PageSize));
     }
 
     /// <summary>

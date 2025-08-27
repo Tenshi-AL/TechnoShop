@@ -1,6 +1,5 @@
 ﻿using Domain.Interfaces;
 using Domain.Models;
-using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -8,15 +7,15 @@ namespace Infrastructure.Services;
 
 public class GpuService(TechnoShopContext db): IGpuService
 {
-    public async Task<ICollection<GPU>> List(GpuQueryParameters gpuListOptions, CancellationToken cancellationToken = default) =>
+    public async Task<IEnumerable<GPU>> List(CancellationToken cancellationToken = default) =>
         await db.Gpus
             .AsNoTracking()
             .Include(p => p.Manufacturer)
             .Include(p => p.MemoryType)
             .Include(p => p.Brand)
-            .Filter(gpuListOptions)
-            .Order(gpuListOptions)
-            .Pagination(gpuListOptions)
+            //.Filter(gpuListOptions)
+            //.Order(gpuListOptions)
+            //.Pagination(gpuListOptions)
             .ToListAsync(cancellationToken);
 
     public async Task<GPU?> Get(Guid id, CancellationToken cancellationToken = default) =>

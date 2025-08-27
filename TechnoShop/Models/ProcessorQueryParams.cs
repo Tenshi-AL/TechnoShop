@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TechnoShop.Interfaces;
 
-namespace Domain.Models;
+namespace TechnoShop.Models;
 
-public class ProcessorQueryParams
+public class ProcessorQueryParams: IQueryParameters
 {
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 10;
