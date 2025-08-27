@@ -1,8 +1,10 @@
 using Domain.Interfaces;
+using FluentValidation.AspNetCore;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using TechnoShop;
+using TechnoShop.DTO;
 using TechnoShop.Helpers;
 using TechnoShop.ServicesExtensions;
 
@@ -10,9 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 builder.Services.AddControllers(options =>
-{
-    options.InputFormatters.Insert(0, MyJPIF.GetJsonPatchInputFormatter());
-});
+    {
+        options.InputFormatters.Insert(0, MyJPIF.GetJsonPatchInputFormatter());
+    })
+    .AddFluentValidation(p => p.RegisterValidatorsFromAssembly(typeof(GpuWriteDtoValidator).Assembly));
 
 builder.Services.AddOpenApi();
 
