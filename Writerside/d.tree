@@ -7,6 +7,5 @@
                  start-page="starter-topic.md">
 
     <toc-element topic="starter-topic.md"/>
-    <toc-element topic="Фильтрация-сортировка-и-пагинация.md"/>
     <toc-element topic="Docker-compose-file.md"/>
 </instance-profile>
