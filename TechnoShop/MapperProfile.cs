@@ -49,7 +49,7 @@ public class MapperProfile: Profile
         CreateMap(typeof(JsonPatchDocument<PsuWriteDto>), typeof(JsonPatchDocument<PSU>));
         CreateMap(typeof(Operation<PsuWriteDto>), typeof(Operation<PSU>));
 
-        CreateMap<RamBrand, RamReadDto>();
+        CreateMap<RamBrand, RamBrandReadDto>();
         CreateMap<RAM, RamReadDto>();
         CreateMap<RamWriteDto, RAM>();
         
