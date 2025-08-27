@@ -2,6 +2,7 @@ using Domain.Interfaces;
 using FluentValidation.AspNetCore;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+using Minio;
 using Persistence;
 using TechnoShop;
 using TechnoShop.DTO;
@@ -19,6 +20,12 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddOpenApi();
 
+builder.Services.AddMinio(configureClient => configureClient
+    .WithEndpoint(configuration["MinIOCredentials:url"])
+    .WithCredentials(configuration["MinIOCredentials:accessKey"], configuration["MinIOCredentials:secretKey"])
+    .WithSSL(false)
+    .Build());
+
 builder.Services.AddDbContext<TechnoShopContext>(p =>
     p.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
@@ -30,6 +37,7 @@ builder.Services.AddScoped<IPSUService, PSUService>();
 builder.Services.AddScoped<IMotherboardService, MotherboardService>();
 builder.Services.AddScoped<IGpuService, GpuService>();
 builder.Services.AddScoped<IProcessorService, ProcessorService>();
+builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
 
 var app = builder.Build();
 
