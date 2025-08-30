@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Minio;
 using Minio.DataModel;
 using Minio.DataModel.Response;
@@ -34,5 +35,12 @@ public class FileController(IBlobStorageService blobStorageService,IMinioClient 
     {
         var result = blobStorageService.ListObjects(bucketName, prefix, recursive, versions, cancellationToken).Result;
         return result.Success ? result.ResponseObject : null;
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> Delete(string objectName, string bucketName, CancellationToken cancellationToken = default)
+    {
+        await blobStorageService.RemoveObject(objectName, bucketName, cancellationToken);
+        return Ok();
     }
 }

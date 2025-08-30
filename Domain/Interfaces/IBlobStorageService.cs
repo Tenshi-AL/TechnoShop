@@ -12,6 +12,9 @@ public class FileOperationResponse<T>(bool success, string? message, T? response
 }
 public interface IBlobStorageService
 {
+    Task RemoveObject(string objectName, 
+        string bucketName, 
+        CancellationToken cancellationToken = default);
     Task<FileOperationResponse<IAsyncEnumerable<Item>>> ListObjects(string bucketName,
         string? prefix = null,
         bool recursive = true,
