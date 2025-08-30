@@ -3,14 +3,16 @@ using Minio;
 using Minio.DataModel;
 using Minio.DataModel.Args;
 using Minio.DataModel.Encryption;
-using Minio.DataModel.Response;
-using Minio.DataModel.Result;
 
 namespace Infrastructure.Services;
 
-
 public class BlobStorageService(IMinioClient minioClient): IBlobStorageService
 {
+    public async Task<bool> IsBucketExistsAsync(string bucketName)
+    {
+        var args = new BucketExistsArgs().WithBucket(bucketName);
+        return await minioClient.BucketExistsAsync(args);
+    }
     public async Task<PutImageResponse> PutFile(string bucketName,
         string objectName,
         Stream fileStream,
@@ -18,6 +20,9 @@ public class BlobStorageService(IMinioClient minioClient): IBlobStorageService
         IServerSideEncryption? sse = null,
         CancellationToken cancellationToken = default)
     {
+        if (!await IsBucketExistsAsync(bucketName))
+            return new PutImageResponse(false, "Bucket doesn't exists", null);
+        
         var args = new PutObjectArgs()
             .WithBucket(bucketName)
             .WithObject(objectName)

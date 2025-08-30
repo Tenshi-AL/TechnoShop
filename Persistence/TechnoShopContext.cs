@@ -47,6 +47,6 @@ public class TechnoShopContext: IdentityDbContext<User, IdentityRole<Guid>, Guid
     {
         base.OnConfiguring(optionsBuilder);
         //TODO remove this after seed
-        //optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=shopDb;Username=admin;Password=root");
+        //optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=shopDb;Username=admin;Password=root");
     }
 }

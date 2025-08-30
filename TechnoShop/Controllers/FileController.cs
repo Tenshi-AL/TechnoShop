@@ -13,12 +13,12 @@ public class FileController(IBlobStorageService blobStorageService,IMinioClient 
     [HttpPost]
     public async Task<IActionResult> Post(PostFileRequest request, CancellationToken cancellationToken = default)
     {
-        var index = 0;
         var result = new List<PutImageResponse>();
         foreach (var file in request.Files)
         {
             var putResult = await blobStorageService.PutFile(bucketName: $"products-images",
-                objectName: $"{request.ProductId}/{request.ProductId}-preview-{index++}{Path.GetExtension(file.FileName)}",
+                //objectName: $"{request.ProductId}/{request.ProductId}-preview-{index++}{Path.GetExtension(file.FileName)}",
+                objectName: $"preview-{request.ProductId}-{file.FileName}",
                 fileStream: file.OpenReadStream(),
                 cancellationToken: cancellationToken);
             result.Add(putResult);

@@ -1,5 +1,4 @@
-﻿using System.Linq.Dynamic.Core;
-using Domain.Models;
+﻿using Domain.Models;
 using TechnoShop.Models;
 
 namespace TechnoShop.Extensions;
