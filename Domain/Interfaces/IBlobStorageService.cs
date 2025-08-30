@@ -4,10 +4,21 @@ using Minio.DataModel.Response;
 
 namespace Domain.Interfaces;
 
-public record PutImageResponse(bool Success, string? Message, PutObjectResponse? MinIoPutObjectResponse);
+public class FileOperationResponse<T>(bool success, string? message, T? responseObject)
+{
+    public bool Success { get; set; } = success;
+    public string? Message { get; set; } = message;
+    public T? ResponseObject { get; set; } = responseObject;
+}
 public interface IBlobStorageService
 {
-    Task<PutImageResponse> PutFile(string bucketName,
+    Task<FileOperationResponse<IAsyncEnumerable<Item>>> ListObjects(string bucketName,
+        string? prefix = null,
+        bool recursive = true,
+        bool versions = false,
+        CancellationToken cancellationToken = default);
+    
+    Task<FileOperationResponse<PutObjectResponse>> PutFile(string bucketName,
         string objectName,
         Stream fileStream,
         IProgress<ProgressReport>? progress = null,

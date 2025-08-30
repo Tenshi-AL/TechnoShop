@@ -3,6 +3,7 @@ using Minio;
 using Minio.DataModel;
 using Minio.DataModel.Args;
 using Minio.DataModel.Encryption;
+using Minio.DataModel.Response;
 
 namespace Infrastructure.Services;
 
@@ -13,7 +14,26 @@ public class BlobStorageService(IMinioClient minioClient): IBlobStorageService
         var args = new BucketExistsArgs().WithBucket(bucketName);
         return await minioClient.BucketExistsAsync(args);
     }
-    public async Task<PutImageResponse> PutFile(string bucketName,
+
+    public async Task<FileOperationResponse<IAsyncEnumerable<Item>>> ListObjects(string bucketName,
+        string? prefix = null,
+        bool recursive = true,
+        bool versions = false,
+        CancellationToken cancellationToken = default)
+    {
+        if (!await IsBucketExistsAsync(bucketName))
+            return new FileOperationResponse<IAsyncEnumerable<Item>>(false, "Bucket doesn't exists", null);
+        
+        var listArgs = new ListObjectsArgs()
+            .WithBucket(bucketName)
+            .WithPrefix(prefix)
+            .WithRecursive(recursive)
+            .WithVersions(versions);
+        var items = minioClient.ListObjectsEnumAsync(listArgs, cancellationToken: cancellationToken);
+        return new FileOperationResponse<IAsyncEnumerable<Item>>(true, null, items);
+    }
+    
+    public async Task<FileOperationResponse<PutObjectResponse>> PutFile(string bucketName,
         string objectName,
         Stream fileStream,
         IProgress<ProgressReport>? progress = null,
@@ -21,7 +41,7 @@ public class BlobStorageService(IMinioClient minioClient): IBlobStorageService
         CancellationToken cancellationToken = default)
     {
         if (!await IsBucketExistsAsync(bucketName))
-            return new PutImageResponse(false, "Bucket doesn't exists", null);
+            return new FileOperationResponse<PutObjectResponse>(false, "Bucket doesn't exists", null);
         
         var args = new PutObjectArgs()
             .WithBucket(bucketName)
@@ -33,6 +53,6 @@ public class BlobStorageService(IMinioClient minioClient): IBlobStorageService
             .WithServerSideEncryption(sse);
         
         var response =  await minioClient.PutObjectAsync(args, cancellationToken: cancellationToken);
-        return new PutImageResponse(true, null, response);
+        return new FileOperationResponse<PutObjectResponse>(true, null, response);
     }
 }
