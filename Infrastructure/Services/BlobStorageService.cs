@@ -15,6 +15,19 @@ public class BlobStorageService(IMinioClient minioClient): IBlobStorageService
         return await minioClient.BucketExistsAsync(args, cancellationToken: cancellationToken);
     }
     
+    public async Task<FileOperationResponse<string?>> GetObjectUrl(string objectName, string bucketName, CancellationToken cancellationToken = default)
+    {
+        if (!await IsBucketExistsAsync(bucketName,cancellationToken))
+            return new FileOperationResponse<string?>(false, "Bucket doesn't exists", null);
+        
+        var args = new PresignedGetObjectArgs()
+            .WithBucket(bucketName)
+            .WithObject(objectName)
+            .WithExpiry(1000);
+        
+        var presignedUrl =  await minioClient.PresignedGetObjectAsync(args);
+        return new FileOperationResponse<string?>(true, null, presignedUrl);
+    }
     
     public async Task RemoveObject(string objectName, string bucketName, CancellationToken cancellationToken = default)
     {

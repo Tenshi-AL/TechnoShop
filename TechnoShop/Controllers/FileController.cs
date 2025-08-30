@@ -19,7 +19,6 @@ public class FileController(IBlobStorageService blobStorageService,IMinioClient 
         foreach (var file in request.Files)
         {
             var putResult = await blobStorageService.PutFile(bucketName: $"products-images",
-                //objectName: $"{request.ProductId}/{request.ProductId}-preview-{index++}{Path.GetExtension(file.FileName)}",
                 objectName: $"preview-{request.ProductId}-{file.FileName}",
                 fileStream: file.OpenReadStream(),
                 cancellationToken: cancellationToken);
@@ -35,6 +34,13 @@ public class FileController(IBlobStorageService blobStorageService,IMinioClient 
     {
         var result = blobStorageService.ListObjects(bucketName, prefix, recursive, versions, cancellationToken).Result;
         return result.Success ? result.ResponseObject : null;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get(string objectName, string bucketName, CancellationToken cancellationToken = default)
+    {
+        var result = await blobStorageService.GetObjectUrl(objectName, bucketName, cancellationToken);
+        return result.Success ? Ok(result.ResponseObject) : BadRequest(result.Message);
     }
 
     [HttpDelete]
