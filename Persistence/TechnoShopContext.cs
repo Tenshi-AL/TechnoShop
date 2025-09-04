@@ -41,6 +41,7 @@ public class TechnoShopContext: IdentityDbContext<User, IdentityRole<Guid>, Guid
         builder.ApplyConfiguration(new PsuConfiguration());
         builder.ApplyConfiguration(new RamConfiguration());
         builder.ApplyConfiguration(new SsdConfiguration());
+        builder.ApplyConfiguration(new RoleConfiguration());
     }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

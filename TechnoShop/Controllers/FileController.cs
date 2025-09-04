@@ -1,4 +1,6 @@
 ﻿using Domain.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Minio;
@@ -10,9 +12,11 @@ namespace TechnoShop.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class FileController(IBlobStorageService blobStorageService,IMinioClient minioClient): ControllerBase
+public class FileController(IBlobStorageService blobStorageService): ControllerBase
 {
+    
     [HttpPost]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Post(PostFileRequest request, CancellationToken cancellationToken = default)
     {
         var result = new List<FileOperationResponse<PutObjectResponse>>();
@@ -29,6 +33,7 @@ public class FileController(IBlobStorageService blobStorageService,IMinioClient 
     }
     
     [HttpGet("List")]
+    [Authorize]
     public IAsyncEnumerable<Item>? List(string bucketName, string? prefix = null, bool recursive = true,
         bool versions = false, CancellationToken cancellationToken = default)
     {
@@ -37,13 +42,16 @@ public class FileController(IBlobStorageService blobStorageService,IMinioClient 
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> Get(string objectName, string bucketName, CancellationToken cancellationToken = default)
     {
+        
         var result = await blobStorageService.GetObjectUrl(objectName, bucketName, cancellationToken);
         return result.Success ? Ok(result.ResponseObject) : BadRequest(result.Message);
     }
 
     [HttpDelete]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> Delete(string objectName, string bucketName, CancellationToken cancellationToken = default)
     {
         await blobStorageService.RemoveObject(objectName, bucketName, cancellationToken);
