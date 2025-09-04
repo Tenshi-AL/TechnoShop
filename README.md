@@ -42,4 +42,21 @@ services:
       POSTGRES_DB: shopDb
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: root
+
+  minio:
+    image: minio/minio:latest
+    command: server --console-address ":9001" /data/
+    networks:
+      - technoShopNetwork
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: Kj198qwe981ty
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
 ```
